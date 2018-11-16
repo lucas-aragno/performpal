@@ -16,5 +16,32 @@ npm install --save performpal
 - [Communicate between steps](docs/communicate-between-steps.md)
 - [Complex Use case](docs/complex-use-case.md)
 
+## Why?
+
+"Service Objects" are a good way to keep business logic away from other application layers. Specially in nodejs that has frameworks like express, koa, hapi, etc that gives to the developer a lot of freedom regarding the implementation of the architecture the lack of a clear division of concerns between layers can be a problem.
+
+Perfompal provides an Object-oriented way to encapsulate business logic into units that are composable.
+
+This allows an easier way to follow a "clean architecture" pattern.
+
+You can learn more of this style on this talks:
+
+- [Clean Architecture and design](https://www.youtube.com/watch?v=Nsjsiz2A9mg)
+- [Trailblazer Intro](https://www.youtube.com/watch?v=5rceVs87q48)
+- [See You On the Trail](https://www.youtube.com/watch?v=pjXhw_0bCmk)
+- [Trailblazer](https://www.youtube.com/watch?v=PJZQkqn8g4U)
+
+
+Also from this books:
+
+- [Clean Architecture](https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164)
+- [Trailblazer](https://leanpub.com/trailblazer)
+
+
+And Following this guys:
+
+- [Nick (creator of trailblazer)](https://twitter.com/apotonick)
+
 
 performpal is inspired by [traiblazer's operations](http://trailblazer.to/gems/operation/2.0/index.html).
+
