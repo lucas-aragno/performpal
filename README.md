@@ -10,7 +10,7 @@ npm install --save performpal
 
 ### How to use it
 
-**Performpal** provides an object called **Operation** that acts as an ochestrator between your business logic and endpoints, models, or services. They implement particular use cases of your application like placing an order or registering a new user.
+**Performpal** provides an object called **Operation** that acts as an orchestrator between your business logic and endpoints, models, or services. They implement particular use cases of your application like placing an order or registering a new user.
 
 The Operation object provides a "react"-ish way to handle actions for your use cases:
 
