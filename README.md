@@ -37,6 +37,8 @@ class SendEmail extends Operation {
     ]
   }
 
+  // on constructor handle this, like react does with this.state
+
   createEmailBody ({params, options}) {
     let { email } = params
     options['emailBody'] = registeredUserEmail({email})
@@ -59,6 +61,9 @@ module.exports = SendEmail
 ```
 
 ```js
+
+// this is an express route
+
 const SendEmail = require('../operations/SendEmail')
 
 app.post('/sendEmail', async (req) => {
