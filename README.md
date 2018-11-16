@@ -12,9 +12,74 @@ npm install --save performpal
 
 **Performpal** provides an object called **Operation** that acts as an ochestrator between your business logic and endpoints, models, or services. They implement particular use cases of your application like placing an order or registering a new user.
 
+The Operation object provides a "react"-ish way to handle actions for your use cases:
+
+
+#### Example
+
+```javascript
+const { Operation } = require('performpal')
+const pug = require('pug')
+const emailService = require('../emailService')
+const registeredUserEmail = pug.compileFile('../templates/users/register')
+
+
+class SendEmail extends Operation {
+  constructor () {
+    super()
+    this.steps = [
+      this.createEmailBody,
+      this.sendEmail
+    ]
+
+    this.failures = [
+      this.handleSubmitEmailError
+    ]
+  }
+
+  createEmailBody ({params, options}) {
+    let { email } = params
+    options['emailBody'] = registeredUserEmail({email})
+  }
+
+
+  sendEmail ({params, options}) {
+    const { emailBody } = options
+    const { email } = params
+    return emailService.send({ email, emailBody })
+  }
+
+  handleSubmitEmailError ({params}) {
+    const { email } = params
+    throw new Error(`Error sending email to ${email}`)
+  }
+}
+
+module.exports = SendEmail
+```
+
+```js
+const SendEmail = require('../operations/SendEmail')
+
+app.post('/sendEmail', async (req) => {
+  try {
+    let { email } = req.body
+    let result = await (new SendEmail()).run({params: {email}})
+    res.send(200).json({result})
+  } catch (error) {
+    res.send(500).json({error})
+  }
+})
+```
+
+For more examples check:
+
+
 - [Your first operation](docs/your-first-operation.md)
 - [Communicate between steps](docs/communicate-between-steps.md)
 - [Complex Use case](docs/complex-use-case.md)
+
+
 
 ## Why?
 

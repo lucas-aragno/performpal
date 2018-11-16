@@ -54,6 +54,14 @@ describe('Operation', () => {
       this.operation.addFailures({failureArray: [handleFailureOne, handleFailureTwo]})
       assert.lengthOf(this.operation.failures, 2)
     })
+
+    it('adds steps as an array', () => {
+      this.operation.steps = [
+        () => console.log('hi!'),
+        () => 10
+      ]
+      assert.lengthOf(this.operation.steps, 2)
+    })
   })
 
   describe('Execution', () => {
