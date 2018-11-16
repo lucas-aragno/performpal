@@ -14,4 +14,6 @@ npm install --save performpal
 
 - [Your first operation](docs/your-first-operation.md)
 - [Communicate between steps](docs/communicate-between-steps)
+
+
 performpal is inspired by [traiblazer's operations](http://trailblazer.to/gems/operation/2.0/index.html).
