@@ -1,0 +1,35 @@
+{
+  "name": "performpal",
+  "version": "1.0.0",
+  "description": "runnable business logic container",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/.bin/mocha --timeout=3000 --recursive tests",
+    "test:debug": "node_modules/.bin/mocha --inspect-brk --timeout=3000 --recursive tests",
+    "lint": "node_modules/.bin/eslint src"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run test"
+    }
+  },
+  "keywords": [
+    "operation",
+    "clean architecture",
+    "express",
+    "koa",
+    "hapi",
+    "nodejs",
+    "business logic"
+  ],
+  "author": "lucas aragno <lucas.aragno157@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^5.9.0",
+    "eslint-config-mooveit-standard": "^1.0.2",
+    "husky": "^1.1.4",
+    "mocha": "^5.2.0"
+  }
+}
