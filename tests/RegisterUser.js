@@ -43,7 +43,7 @@ describe('Register User', () => {
       this.email = 'test@test.com'
       let password = 'security'
       let params = {email: this.email, password, userRepository: this.repository, emailService: this.mailer }
-      this.result = await (new RegisterUser()).run({params})    
+      this.result = await (new RegisterUser()).run({params})
     })
 
     it('fails when trying to create a duplicated user', async () => {
