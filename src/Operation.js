@@ -1,5 +1,4 @@
 let stepIndex = 0
-let failureIndex = 0
 
 class Operation {
   constructor () {
@@ -14,7 +13,8 @@ class Operation {
   }
 
   failure (failureFunction) {
-    let failure = this._failures.push(failureFunction)
+    let failureHash = { index: this._steps.length, failureFunction } 
+    let failure = this._failures.push(failureHash)
     return failure
   }
 
@@ -27,26 +27,19 @@ class Operation {
   }
 
   set failures (failureArray) {
-    this._failures = failureArray
+    this._failures = failureArray.map((failureFunction, index) => { failureFunction, index })
   }
 
   set steps (stepArray) {
     this._steps = stepArray
   }
 
-  addSteps ({stepArray}) {
-    this._steps = [...this._steps, ...stepArray]
-  }
-
-  addFailures ({failureArray}) {
-    this._failures = [...this._failures, ...failureArray]
-  }
-
   async fail ({error, params, options}) {
-    while (this._failures.length > failureIndex) {
-      await this._failures[failureIndex]({error, params, options})
-      failureIndex += 1
-      break
+    const failureToExec = this._failures.find((failure) => failure.index === stepIndex + 1)
+    if (failureToExec) {
+      await failureToExec['failureFunction']({error, params, options})
+    } else {
+      throw new Error(`Step failed with error ${error}`)
     }
   }
 
@@ -56,7 +49,6 @@ class Operation {
 
   async run ({params}) {
     stepIndex = 0
-    failureIndex = 0
     let result = null
     while(this._steps.length > stepIndex) {
       try {

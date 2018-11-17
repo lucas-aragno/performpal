@@ -33,13 +33,6 @@ describe('Operation', () => {
       assert.lengthOf(this.operation.steps, 2)
     })
 
-    it('receives an array of steps', () => {
-      let stepOne = () => {}
-      let stepTwo = () => 1
-      this.operation.addSteps({stepArray: [stepOne, stepTwo]})
-      assert.lengthOf(this.operation.steps, 2)
-    })
-
     it('receives failures correctly', () => {
       let handleFailureOne = () => console.error('woopsie')
       let handleFailureTwo = () => console.error('woops')
@@ -51,7 +44,10 @@ describe('Operation', () => {
     it('receives an array of failures', () => {
       let handleFailureOne = () => console.error('woopsie')
       let handleFailureTwo = () => console.error('woops')
-      this.operation.addFailures({failureArray: [handleFailureOne, handleFailureTwo]})
+      this.operation.failures = [
+        handleFailureOne,
+        handleFailureTwo
+      ]
       assert.lengthOf(this.operation.failures, 2)
     })
 
@@ -81,11 +77,40 @@ describe('Operation', () => {
     })
 
     it('executes an operation with an error and catches it with a failure', async () => {
-      let stepToExecute = () => {throw new Error()}
-      let consoleLogError = ({error}) => { throw  new Error()}
+      let stepToExecute = () => {throw new Error() }
+      let consoleLogError = ({error}) => { throw  new Error() }
       this.operation.step(stepToExecute)
       this.operation.failure(consoleLogError)
       await expect(this.operation.run({})).be.rejectedWith(Error)
+    })
+  })
+
+  describe('Failure', () => {
+    before(() => {
+      this.operation = new Operation();
+    })
+
+    afterEach(() => {
+      this.operation.steps = []
+      this.operation.failures = []
+    })
+    it('runs 2 operations successfully then fails with a custom exception', async () => {
+      function TestException () {
+        this.message = 'Error on test'
+      }
+
+      let stepOne = () => 'test'
+      let stepTwo = () => 'works'
+      let stepThree = () => { throw new Error() }
+      let failureOne = () => { throw new Error() }
+      let failureTwo = () => { throw new TestException() }
+
+      this.operation.step(stepOne)
+      this.operation.step(stepTwo)
+      this.operation.failure(failureOne)
+      this.operation.step(stepThree)
+      this.operation.failure(failureTwo)
+      await expect(this.operation.run({})).be.rejectedWith({message: 'Error on test'})
     })
   })
 })
