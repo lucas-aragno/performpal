@@ -35,7 +35,9 @@ class Operation {
   }
 
   async fail ({error, params, options}) {
-    const failureToExec = this._failures.find((failure) => failure.index === stepIndex + 1)
+    const failureToExec = this._failures.find((failure) =>
+      failure.index === stepIndex || failure.index === stepIndex + 1
+    )
     if (failureToExec) {
       await failureToExec['failureFunction']({error, params, options})
     } else {
