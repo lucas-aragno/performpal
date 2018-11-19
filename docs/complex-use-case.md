@@ -37,15 +37,15 @@ const SaveRecordException = ({ record }) => {
 class RegisterUser extends Operation {
   constructor () {
     super()
-    this.step(({options, params: { email, userRepository } }) => this.checkIfUserExists({ options, params: { email, userRepository } }))
+    this.step(this.checkIfUserExists)
     this.failure(this.userAlreadyExistsFailure)
-    this.step(({options, params: { password }}) => this.hashPassword({ options, params: { password } }))
+    this.step(this.hashPassword)
     this.failure(this.hashPasswordFailure)
-    this.step(({options, params: { email, userRepository }}) => this.createUserOnRepository({ options, params: { email, userRepository } }))
-    this.failure(({params: { email }}) => this.saveRecordFailure({email}))
-    this.step(({options, params: { email, emailService }}) => this.sendEmailToUser({ options, params: { email, emailService } }))
-    this.failure(({params: { email }}) => this.sendEmailFailure({email}))
-    this.step(({options}) => this.finalizeRegister({options}))
+    this.step(this.createUserOnRepository)
+    this.failure(this.saveRecordFailure)
+    this.step(this.sendEmailToUser)
+    this.failure(this.sendEmailFailure)
+    this.step(this.finalizeRegister)
   }
 
   async checkIfUserExists ({options, params: { email, userRepository }}) {
@@ -120,19 +120,19 @@ Now let's check our constructor:
 ```javascript
   constructor () {
     super()
-    this.step(({options, params: { email, userRepository } }) => this.checkIfUserExists({ options, params: { email, userRepository } }))
+    this.step(this.checkIfUserExists)
     this.failure(this.userAlreadyExistsFailure)
-    this.step(({options, params: { password }}) => this.hashPassword({ options, params: { password } }))
+    this.step(this.hashPassword)
     this.failure(this.hashPasswordFailure)
-    this.step(({options, params: { email, userRepository }}) => this.createUserOnRepository({ options, params: { email, userRepository } }))
-    this.failure(({params: { email }}) => this.saveRecordFailure({email}))
-    this.step(({options, params: { email, emailService }}) => this.sendEmailToUser({ options, params: { email, emailService } }))
-    this.failure(({params: { email }}) => this.sendEmailFailure({email}))
-    this.step(({options}) => this.finalizeRegister({options}))
+    this.step(this.createUserOnRepository)
+    this.failure(this.saveRecordFailure)
+    this.step(this.sendEmailToUser)
+    this.failure(this.sendEmailFailure)
+    this.step(this.finalizeRegister)
   }
 ```
 
-This are the steps we listed earlier, each step uses a different combination of parameters, some uses just email other emails and the data repository, etc.
+This are the steps we listed earlier, each step will use a different combination of parameters, some will just use email, other emails and the data repository, etc.
 
 However there is a new thing here, the `this.failure` method. This work just like `step` but what this functions will be doing is catching exceptions on previous steps.
 
